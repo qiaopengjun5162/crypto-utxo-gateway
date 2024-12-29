@@ -1,0 +1,85 @@
+name: build
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build-go:
+    strategy:
+      matrix:
+        platform: [ubuntu-latest]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      # Set up Go environment
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: '1.23.4'  # Specify the Go version you want to use
+
+      # Cache Go modules
+      - name: Cache Go modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.mod', '**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          go mod tidy
+          go mod download
+
+      # Install golangci-lint
+      - name: Install golangci-lint
+        run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+
+      # Check Go code formatting
+      - name: Check code format
+        run: go fmt ./...
+
+      # Lint Go sources
+      - name: Lint Go sources
+        run: golangci-lint run ./...
+
+      # Run Go tests
+      - name: Run Go tests
+        run: go test -v ./...
+
+      # Generate changelog (only on tag push)
+      - name: Generate a changelog
+        uses: orhun/git-cliff-action@v2
+        id: git-cliff
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          config: cliff.toml
+          args: -vv --latest --strip header
+        env:
+          OUTPUT: CHANGES.md
+
+      # Create GitHub Release
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          body: ${{ steps.git-cliff.outputs.content }}
