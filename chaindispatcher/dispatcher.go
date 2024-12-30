@@ -3,6 +3,8 @@ package chaindispatcher
 import (
 	"context"
 
+	"github.com/qiaopengjun5162/crypto-utxo-gateway/chain/bitcoincash"
+
 	"runtime/debug"
 	"strings"
 
@@ -36,14 +38,14 @@ func New(conf *config.Config) (*ChainDispatcher, error) {
 		registry: make(map[ChainType]chain.IChainAdaptor),
 	}
 	chainAdaptorFactoryMap := map[string]func(conf *config.Config) (chain.IChainAdaptor, error){
-		bitcoin.ChainName: bitcoin.NewChainAdaptor,
-		//bitcoincash.ChainName: bitcoincash.NewChainAdaptor,
+		bitcoin.ChainName:     bitcoin.NewChainAdaptor,
+		bitcoincash.ChainName: bitcoincash.NewChainAdaptor,
 		//dash.ChainName:        dash.NewChainAdaptor,
 		//litecoin.ChainName:    litecoin.NewChainAdaptor,
 	}
 	supportedChains := []string{
 		bitcoin.ChainName,
-		//bitcoincash.ChainName,
+		bitcoincash.ChainName,
 		//dash.ChainName,
 		//litecoin.ChainName,
 	}

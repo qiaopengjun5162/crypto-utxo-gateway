@@ -22,7 +22,7 @@ func NewBlockChainClient(url string) (*BcClient, error) {
 	}
 
 	client := gresty.New()
-	client.SetHostURL(url)
+	client.SetBaseURL(url)
 	client.OnAfterResponse(func(c *gresty.Client, r *gresty.Response) error {
 		statusCode := r.StatusCode()
 		if statusCode >= 400 {

@@ -5,25 +5,41 @@ run:
   tests: false
 
 linters:
-  disable-all: false
+  disable-all: true
   enable:
-    # bugs/error
-#    - staticcheck
-    - gosec
-    # - errcheck
-
-    # performance
-    - prealloc
-
-    # style, formatting
-    - gofmt
+    - asciicheck
+    - bodyclose
+    - depguard
+    - dogsled
+    - errcheck
+    - errorlint
+    - exportloopref
+    - gci
     - goconst
-    - unconvert
+    - gocritic
+    - gocyclo
+    - gofmt
+    - goimports
+    - goprintffuncname
+    - gosec
+    - gosimple
+    - govet
+    - importas
+    - ineffassign
     - misspell
-    - unparam
     - nakedret
-    - tagliatelle
-    #- dupl
+    - nilerr
+    - nolintlint
+    - prealloc
+    - revive
+    - staticcheck
+    - stylecheck
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+    - usestdlibvars
+    - whitespace
 
 linters-settings:
   gofmt:
