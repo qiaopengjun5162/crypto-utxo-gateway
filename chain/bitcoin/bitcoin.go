@@ -12,7 +12,7 @@ import (
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/pkg/errors"
 
-	"github.com/btcsuite/btcd/btcec/v2"
+	btcec "github.com/btcsuite/btcd/btcec/v2"
 	"github.com/btcsuite/btcd/btcec/v2/ecdsa"
 	"github.com/btcsuite/btcd/btcec/v2/schnorr"
 	"github.com/btcsuite/btcd/btcutil"
@@ -94,14 +94,14 @@ func (c *ChainAdaptor) ConvertAddress(req *utxo.ConvertAddressRequest) (*utxo.Co
 			return nil, err
 		}
 		address = p2pkhAddr.EncodeAddress()
-		break
+
 	case "p2wpkh":
 		witnessAddr, err := btcutil.NewAddressWitnessPubKeyHash(pubKeyHash, &chaincfg.MainNetParams)
 		if err != nil {
 			log.Error("create p2wpkh fail", "err", err)
 		}
 		address = witnessAddr.EncodeAddress()
-		break
+
 	case "p2sh":
 		witnessAddr, _ := btcutil.NewAddressWitnessPubKeyHash(pubKeyHash, &chaincfg.MainNetParams)
 		script, err := txscript.PayToAddrScript(witnessAddr)
@@ -115,7 +115,7 @@ func (c *ChainAdaptor) ConvertAddress(req *utxo.ConvertAddressRequest) (*utxo.Co
 			return nil, err
 		}
 		address = p2shAddr.EncodeAddress()
-		break
+
 	case "p2tr":
 		pubKey, err := btcec.ParsePubKey(compressedPubKeyBytes)
 		if err != nil {
