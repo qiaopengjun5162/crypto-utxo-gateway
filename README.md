@@ -164,7 +164,7 @@ For significant changes, please open an issue first to discuss the intended chan
 
 ## **License**
 
-This project is licensed under the Apache 2.0 License. See the [LICENSE](LICENSE) file for more information.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
 
 ---
 
