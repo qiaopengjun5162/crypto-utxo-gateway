@@ -303,7 +303,9 @@ func (d *ChainDispatcher) CreateUnSignTransaction(ctx context.Context, request *
 // - An error if the preHandler or the chain adaptor method returns an error.
 func (d *ChainDispatcher) BuildSignedTransaction(ctx context.Context, request *utxo.SignedTransactionRequest) (*utxo.SignedTransactionResponse, error) {
 	resp := d.preHandler(request)
+	log.Info("build signed tx fail at pre handle", "request", request)
 	if resp != nil {
+
 		return &utxo.SignedTransactionResponse{
 			Code: common.ReturnCode_ERROR,
 			Msg:  "signed tx fail at pre handle",

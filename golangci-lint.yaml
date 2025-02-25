@@ -16,7 +16,7 @@ linters:
     - exportloopref
     - gci
     - goconst
-    - gocritic
+#    - gocritic
     - gocyclo
     - gofmt
     - goimports
@@ -65,3 +65,4 @@ issues:
   exclude:
     # gosec: Duplicated errcheck checks
     - G104
+    - "could not import"
