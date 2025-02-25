@@ -35,7 +35,7 @@ func main() {
 		log.Error("Setup dispatcher failed", "err", err)
 		panic(err)
 	}
-
+	log.Info("Setup dispatcher success")
 	grpcServer := grpc.NewServer(grpc.UnaryInterceptor(dispatcher.Interceptor))
 	defer grpcServer.GracefulStop()
 

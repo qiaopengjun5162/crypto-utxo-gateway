@@ -1,0 +1,12 @@
+[tools]
+
+# Core dependencies
+go = "1.24.0"
+rust = "1.85.0"
+python = "3.10.8"
+uv = "0.6.0"
+jq = "1.7.1"
+
+[settings]
+experimental = true
+pipx.uvx = true
